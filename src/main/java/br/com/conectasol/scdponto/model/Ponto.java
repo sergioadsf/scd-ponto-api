@@ -1,9 +1,12 @@
 package br.com.conectasol.scdponto.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,9 +22,17 @@ public class Ponto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "data")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-	private LocalDateTime data;
+	@Column(name = "data_registro", columnDefinition = "DATE")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dataRegistro;
+
+	@Column(name = "hora_registro", columnDefinition = "TIME")
+	@JsonFormat(pattern = "HH:mm")
+	private LocalTime horaRegistro;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "tipo")
+	private TipoPonto tipo;
 
 	public Long getId() {
 		return id;
@@ -31,12 +42,28 @@ public class Ponto {
 		this.id = id;
 	}
 
-	public LocalDateTime getData() {
-		return data;
+	public LocalDate getDataRegistro() {
+		return dataRegistro;
 	}
 
-	public void setData(LocalDateTime data) {
-		this.data = data;
+	public void setDataRegistro(LocalDate dataRegistro) {
+		this.dataRegistro = dataRegistro;
+	}
+
+	public LocalTime getHoraRegistro() {
+		return horaRegistro;
+	}
+
+	public void setHoraRegistro(LocalTime horaRegistro) {
+		this.horaRegistro = horaRegistro;
+	}
+
+	public TipoPonto getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoPonto tipo) {
+		this.tipo = tipo;
 	}
 
 }

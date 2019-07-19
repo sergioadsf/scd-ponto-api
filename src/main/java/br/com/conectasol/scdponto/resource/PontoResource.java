@@ -17,10 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.conectasol.scdponto.common.Response;
 import br.com.conectasol.scdponto.model.Ponto;
 import br.com.conectasol.scdponto.repository.PontoRepository;
+import br.com.conectasol.scdponto.service.PontoService;
 
 @RestController
 @RequestMapping("/ponto")
 public class PontoResource {
+
+	@Autowired
+	private PontoService service;
 
 	@Autowired
 	private PontoRepository repository;
@@ -37,16 +41,16 @@ public class PontoResource {
 		repository.deleteById(id);
 	}
 
+	@GetMapping("ultimos")
+	public ResponseEntity<List<Ponto>> ultimosPontosBatidos() {
+
+		return ResponseEntity.ok(service.ultimosPontosBatidos());
+	}
+
 	@PostMapping
 	public ResponseEntity<Response> baterPonto(@RequestBody Ponto ponto) {
-
-		System.out.println(ponto.getData());
-		Ponto pontoSalvo = repository.save(ponto);
-		if (pontoSalvo != null) {
-			return ResponseEntity.ok(new Response(pontoSalvo.getId()));
-		}
-
-		return ResponseEntity.ok(new Response("Ponto inexistente!"));
+		Ponto pontoSalvo = service.salvar(ponto);
+		return ResponseEntity.ok(new Response(pontoSalvo.getId()));
 	}
 
 }
